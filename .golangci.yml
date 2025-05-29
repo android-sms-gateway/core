@@ -208,6 +208,9 @@ linters:
         - "^golang.org/x/tools/go/analysis.Analyzer$"
         - "^google.golang.org/protobuf/.+Options$"
         - "^gopkg.in/yaml.v3.Node$"
+        - "^github.com/gofiber/fiber/v2.Config$"
+        - "^github.com/gofiber/contrib/fiberzap/v2.Config$"
+        - "^go.uber.org/fx.Hook$"
 
     funlen:
       # Checks the number of lines in a function.
@@ -376,6 +379,9 @@ linters:
           - noctx
           - wrapcheck
         path: _test\.go
+      - linters:
+          - gochecknoglobals
+        path: module\.go
     paths:
       - third_party$
       - builtin$
