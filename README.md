@@ -69,7 +69,7 @@ func main() {
 }
 ```
 
-`http.Module` needs an `http.Config` and an `http.Options`; production services populate them with [config.Load](config/config.go) instead of hardcoded values.
+`http.Module` needs an `http.Config` and an `http.Options`. [config.Load](config/config.go) populates `http.Config` from the environment; `http.Options` is set through its `WithGetOnly`, `WithViews`, and `WithErrorHandler` builder methods.
 
 ## ⚙️ Configuration
 
