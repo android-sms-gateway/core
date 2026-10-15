@@ -6,11 +6,9 @@
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 
-Shared Go library for SMSGate backend services: configuration, logging, Redis, HTTP, and validation as composable Uber Fx modules.
-
 ## 📖 About
 
-SMSGate Core is the shared Go foundation for SMSGate services. It provides environment-driven configuration, structured logging, Redis clients, Fiber HTTP servers, and request validation — each packaged as a self-contained Uber Fx module. Services import only the modules they need. Full ecosystem docs: https://docs.sms-gate.app/.
+SMSGate Core is the shared Go foundation for SMSGate services: configuration, logging, Redis, HTTP, and validation. The `http`, `logger`, `redis`, and `validator` packages expose Uber Fx modules; `config` and `handler` are plain helpers. Services import only the packages they need. Full ecosystem docs: https://docs.sms-gate.app/.
 
 ## 📚 Table of Contents
 
@@ -27,7 +25,7 @@ SMSGate Core is the shared Go foundation for SMSGate services. It provides envir
 
 ## ⭐ Features
 
-- Uber Fx modules: `logger`, `redis`, `validator`, `http`
+- Uber Fx modules: `http`, `logger`, `redis`, `validator`
 - envconfig + godotenv configuration loader
 - Zap structured logging (development mode via `DEBUG`)
 - Fiber v2 HTTP server with request logging, recovery, trusted proxies, error handlers
@@ -66,9 +64,12 @@ func main() {
 		redis.Module,
 		validator.Module,
 		http.Module,
+		fx.Supply(http.Config{Address: ":8080"}, http.Options{}),
 	).Run()
 }
 ```
+
+`http.Module` needs an `http.Config` and an `http.Options`; production services populate them with [config.Load](config/config.go) instead of hardcoded values.
 
 ## ⚙️ Configuration
 
@@ -94,7 +95,7 @@ Logger config: set `DEBUG=1` for development mode. See [logger/logger.go](logger
 | [redis](redis/redis.go) | `*redis.Client` module |
 | [validator](validator/validator.go) | `*validator.Validate` module |
 
-Each package exposes an `fx.Module`; import paths mirror the table above.
+Each of `http`, `logger`, `redis`, and `validator` exposes an `fx.Module`; import paths mirror the table above.
 
 ## 📚 Documentation
 
@@ -104,7 +105,7 @@ Each package exposes an `fx.Module`; import paths mirror the table above.
 
 ## 🤝 Contributing
 
-Open an issue first, then submit a PR. Follow the [README style guide](https://docs.sms-gate.app/). Run `make lint` and `make test` locally.
+Open an issue first, then submit a PR. Follow the [contribution guidelines](https://docs.sms-gate.app/contributing/). Run `make lint` and `make test` locally.
 
 ## ⚖️ License
 
